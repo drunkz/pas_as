@@ -1,0 +1,7 @@
+__history/
+__recovery/
+bin/
+*.res
+*.identcache
+*.dproj.local
+*.vlb
