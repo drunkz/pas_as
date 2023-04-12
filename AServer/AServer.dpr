@@ -5,7 +5,8 @@
 
 uses
   Vcl.Forms,
-  uFormMain in 'uFormMain.pas' {FormMain};
+  uFormMain in 'uFormMain.pas' {FormMain},
+  common in 'common.pas';
 
 {$R *.res}
 

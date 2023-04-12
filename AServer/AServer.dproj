@@ -104,6 +104,7 @@
             <Form>FormMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="common.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -132,7 +133,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">
-                <DeployFile LocalName="Win32\Debug\AServer.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\bin\AServer.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>AServer.exe</RemoteName>
                         <Overwrite>true</Overwrite>
