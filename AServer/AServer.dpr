@@ -1,4 +1,4 @@
-﻿program CenterServer;
+﻿program AServer;
 
 {$WEAKLINKRTTI ON}
 {$RTTI EXPLICIT METHODS([]) PROPERTIES([]) FIELDS([])}

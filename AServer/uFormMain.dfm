@@ -3,9 +3,9 @@ object FormMain: TFormMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = #20013#24515#26381#21153#22120
-  ClientHeight = 441
-  ClientWidth = 624
+  Caption = #39564#35777#26381#21153
+  ClientHeight = 442
+  ClientWidth = 628
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
