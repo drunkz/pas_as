@@ -8,7 +8,8 @@ uses
   uFormMain in 'uFormMain.pas' {FormMain},
   Global in 'Global.pas',
   uLog in 'uLog.pas',
-  Common in 'Common.pas';
+  Common in 'Common.pas',
+  uNet in 'uNet.pas';
 
 {$R *.res}
 

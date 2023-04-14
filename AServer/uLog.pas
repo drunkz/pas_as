@@ -7,6 +7,8 @@ uses
 
 procedure Log(str: string);
 
+procedure LogErr(str: string);
+
 implementation
 
 uses
@@ -17,6 +19,11 @@ begin
   if FormMain.mmoLog.Lines.Count >= 300 then
     FormMain.mmoLog.Clear;
   FormMain.mmoLog.Lines.Add(Format('%s %s', [DateTimeToStr(Now), str]));
+end;
+
+procedure LogErr(str: string);
+begin
+  Log(Format('[ERR] %s', [str]))
 end;
 
 end.

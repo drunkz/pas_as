@@ -60,7 +60,11 @@ object FormMain: TFormMain
     Port = 8081
     ServerType = stNonBlocking
     OnListen = serverMainListen
+    OnGetSocket = serverMainGetSocket
     OnClientConnect = serverMainClientConnect
+    OnClientDisconnect = serverMainClientDisconnect
+    OnClientRead = serverMainClientRead
+    OnClientError = serverMainClientError
     Left = 136
     Top = 384
   end

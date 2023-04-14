@@ -107,6 +107,7 @@
         <DCCReference Include="Global.pas"/>
         <DCCReference Include="uLog.pas"/>
         <DCCReference Include="Common.pas"/>
+        <DCCReference Include="uNet.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -15,6 +15,12 @@ uses
 
 procedure LoadBlackList;
 begin
+  // 文件如果不存在先创建
+  if not FileExists(BLACKLIST_FILE_NAME) then begin
+    var FileStream := TFileStream.Create(BLACKLIST_FILE_NAME, fmCreate);
+    FileStream.Free;
+  end;
+
   BlackList.Clear;
   BlackList.LoadFromFile(BLACKLIST_FILE_NAME);
   for var i := BlackList.Count - 1 downto 0 do begin
