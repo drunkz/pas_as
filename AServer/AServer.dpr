@@ -6,7 +6,9 @@
 uses
   Vcl.Forms,
   uFormMain in 'uFormMain.pas' {FormMain},
-  common in 'common.pas';
+  Global in 'Global.pas',
+  uLog in 'uLog.pas',
+  Common in 'Common.pas';
 
 {$R *.res}
 

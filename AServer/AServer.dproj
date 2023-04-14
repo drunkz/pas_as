@@ -104,7 +104,9 @@
             <Form>FormMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="common.pas"/>
+        <DCCReference Include="Global.pas"/>
+        <DCCReference Include="uLog.pas"/>
+        <DCCReference Include="Common.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
