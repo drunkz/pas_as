@@ -16,7 +16,7 @@ uses
 
 procedure Log(str: string);
 begin
-  if FormMain.mmoLog.Lines.Count >= 300 then
+  if FormMain.mmoLog.Lines.Count >= 1000 then
     FormMain.mmoLog.Clear;
   FormMain.mmoLog.Lines.Add(Format('%s %s', [DateTimeToStr(Now), str]));
 end;

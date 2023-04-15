@@ -11,14 +11,16 @@ const
 
 type
   TMClientSocket = class(TServerClientWinSocket)
-    /// <remarks> 当前数据包大小 </remarks>
-    m_PacketSize: Integer;
-    /// <remarks> 当前获得数据包大小的长度(等于4时完整获得) </remarks>
-    m_PacketSizeLen: Byte;
+    /// <remarks> 当前数据包长度 </remarks>
+    m_PacketLen: Integer;
+    /// <remarks> 当前数据包长度(等于4时完整获得长度) </remarks>
+    m_PacketLenSize: Byte;
     /// <remarks> 接收数据包缓冲区 </remarks>
     m_PacketBuf: array[0..DATA_BUF_SIZE - 1] of Byte;
     /// <remarks> 已接收数据大小 </remarks>
     m_PacketBufSize: Word;
+    /// <remarks> 收到完整数据包总数 </remarks>
+    PacketCount: LongWord;
   private
   public
     constructor Create(socket: TSocket; ServerWinSocket: TServerWinSocket);
@@ -58,46 +60,46 @@ begin
   if RecvLen <= 0 then
     Exit;
   var RecvBufPos: Word := 0;   // 当前读取位置
-  var PacketSizeLen: Byte := SizeOf(m_PacketSize);
+  var PacketLenSize: Byte := SizeOf(m_PacketLen);   // 头部长度大小4
   while RecvBufPos < RecvLen do begin
     // 未获得完整4字节长度时拷贝长度
-    if m_PacketSizeLen < PacketSizeLen then begin
+    if m_PacketLenSize < PacketLenSize then begin
       RecvLenTmp := RecvLen - RecvBufPos;
-      if m_PacketSizeLen + RecvLenTmp <= PacketSizeLen then begin
+      if m_PacketLenSize + RecvLenTmp <= PacketLenSize then begin
         copyNum := RecvLenTmp;
       end
       else begin
         // RecvLen过大的情况下仅拷贝缺失数据
-        copyNum := PacketSizeLen - m_PacketSizeLen;
+        copyNum := PacketLenSize - m_PacketLenSize;
       end;
       // 获得4字节实际数据包长度
-      Move(RecvBuffer[RecvBufPos], PByte(@m_PacketSize)[m_PacketSizeLen], copyNum);
-      Inc(m_PacketSizeLen, copyNum);
+      Move(RecvBuffer[RecvBufPos], PByte(@m_PacketLen)[m_PacketLenSize], copyNum);
+      Inc(m_PacketLenSize, copyNum);
       Inc(RecvBufPos, copyNum);
     end;
-    if (m_PacketSizeLen <> PacketSizeLen) or (m_PacketSize = 0) or (RecvBufPos = RecvLen) then
+    if (m_PacketLenSize <> PacketLenSize) or (m_PacketLen = 0) or (RecvBufPos = RecvLen) then
       Exit;
-    if m_PacketSize > DATA_BUF_SIZE then begin
+    if m_PacketLen > DATA_BUF_SIZE then begin
       Result := 1;
       Exit;
     end;
-    if m_PacketBufSize < m_PacketSize then begin
+    if m_PacketBufSize < m_PacketLen then begin
       RecvLenTmp := RecvLen - RecvBufPos;
-      if m_PacketBufSize + RecvLenTmp <= m_PacketSize then begin
+      if m_PacketBufSize + RecvLenTmp <= m_PacketLen then begin
         copyNum := RecvLenTmp;
       end
       else begin
         // RecvLen过大的情况下仅拷贝缺失数据
-        copyNum := m_PacketSize - m_PacketBufSize;
+        copyNum := m_PacketLen - m_PacketBufSize;
       end;
       Move(RecvBuffer[RecvBufPos], m_PacketBuf[m_PacketBufSize], copyNum);
       Inc(m_PacketBufSize, copyNum);
       Inc(RecvBufPos, copyNum);
     end;
-    if m_PacketBufSize = m_PacketSize then begin
+    if m_PacketBufSize = m_PacketLen then begin
       ProcessPacket;
-      m_PacketSize := 0;
-      m_PacketSizeLen := 0;
+      m_PacketLen := 0;
+      m_PacketLenSize := 0;
       m_PacketBufSize := 0;
       FillChar(m_PacketBuf, SizeOf(m_PacketBuf), 0);
     end;
@@ -107,9 +109,10 @@ end;
 procedure TMClientSocket.ProcessPacket;
 begin
   var tbytes: tbytes;
-  SetLength(tbytes, m_PacketSize);
-  Move(m_PacketBuf[0], tbytes[0], m_PacketSize);
+  SetLength(tbytes, m_PacketLen);
+  Move(m_PacketBuf[0], tbytes[0], m_PacketLen);
   Log(Format('收到数据：%s', [TEncoding.UTF8.GetString(tbytes)]));
+  Inc(PacketCount);
 end;
 
 end.

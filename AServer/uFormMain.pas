@@ -27,9 +27,11 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btn1Click(Sender: TObject);
     procedure serverMainListen(Sender: TObject; Socket: TCustomWinSocket);
+    /// <remarks> 客户连接成功后 </remarks>
     procedure serverMainClientConnect(Sender: TObject; Socket: TCustomWinSocket);
     /// <remarks> 菜单项_重载黑名单列表 </remarks>
     procedure MenuItemReloadBlackListClick(Sender: TObject);
+    /// <remarks> 客户断开连接后 </remarks>
     procedure serverMainClientDisconnect(Sender: TObject; Socket: TCustomWinSocket);
     procedure serverMainClientRead(Sender: TObject; Socket: TCustomWinSocket);
     procedure serverMainClientError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
@@ -50,7 +52,11 @@ uses
 
 procedure TFormMain.btn1Click(Sender: TObject);
 begin
-  LogErr(Format('连接数: %d', [serverMain.Socket.ActiveConnections]));
+  //LogErr(Format('连接数: %d', [serverMain.Socket.ActiveConnections]));
+  for var i := 0 to serverMain.Socket.ActiveConnections - 1 do begin
+    with serverMain.Socket.Connections[i] as TMClientSocket do
+      Log(Format('收到数据包总数：%u', [PacketCount]));
+  end;
 end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
@@ -83,7 +89,7 @@ begin
     Log(Format('客户(%s)位于黑名单中，拒绝连接。', [IPAddress]));
     Exit;
   end;
-  if IPAddress <> '127.0.0.1' then begin
+  if (IPAddress <> '127.0.0.1') and not IPAddress.StartsWith('192.168.') then begin
     for var i := 0 to serverMain.Socket.ActiveConnections - 1 do begin
       if serverMain.Socket.Connections[i].RemoteAddress = IPAddress then begin
         Socket.Close;

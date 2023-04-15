@@ -1,7 +1,7 @@
-CenterServer每天0点后验证是否过期
+CenterServer每天0点后验证是否过期，过期后随机N小时后停止
 找回密码功能
-CenterServer登录时验证本机是否为绑定机器码(根据mac和ip运算)
-Machine由CenterServer生成出来，运行后连接固定IP
+CenterServer登录时验证本机是否为对应机器码(根据mac和ip运算)
+Machine由CenterServer在线生成，运行后连接固定IP
 注册账号时防止频繁注册
-CenterServer运行时清除页面模板由AServer传输获取
-
+CenterServer运行时清除模板由AServer传输获取
+发送消息频率控制
