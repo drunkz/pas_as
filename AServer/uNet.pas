@@ -20,7 +20,13 @@ type
     /// <remarks> 已接收数据大小 </remarks>
     m_PacketBufSize: Word;
     /// <remarks> 收到完整数据包总数 </remarks>
-    PacketCount: LongWord;
+    PacketTotal: LongWord;
+    /// <remarks> 收到完整数据包总字节量 </remarks>
+    PacketByteTotal: LongWord;
+    /// <remarks> 上一秒收到总数据量 </remarks>
+    PacketByteTotalLastSec: LongWord;
+    /// <remarks> 最大每秒收到数据量 </remarks>
+    PacketByteSecMax: LongWord;
   private
   public
     constructor Create(socket: TSocket; ServerWinSocket: TServerWinSocket);
@@ -98,10 +104,12 @@ begin
     end;
     if m_PacketBufSize = m_PacketLen then begin
       ProcessPacket;
+      Inc(PacketByteTotal, m_PacketLen);
       m_PacketLen := 0;
       m_PacketLenSize := 0;
       m_PacketBufSize := 0;
       FillChar(m_PacketBuf, SizeOf(m_PacketBuf), 0);
+      Inc(PacketTotal);
     end;
   end;
 end;
@@ -111,8 +119,7 @@ begin
   var tbytes: tbytes;
   SetLength(tbytes, m_PacketLen);
   Move(m_PacketBuf[0], tbytes[0], m_PacketLen);
-  Log(Format('收到数据：%s', [TEncoding.UTF8.GetString(tbytes)]));
-  Inc(PacketCount);
+  //Log(Format('收到数据：%s', [TEncoding.UTF8.GetString(tbytes)]));
 end;
 
 end.

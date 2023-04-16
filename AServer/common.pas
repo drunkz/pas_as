@@ -5,8 +5,15 @@ interface
 uses
   System.Classes, System.SysUtils;
 
+const
+  KB = 1024;
+  MB = KB * 1024;
+  GB = MB * 1024;
+
 /// <remarks> 加载黑名单列表 </remarks>
 procedure LoadBlackList;
+
+function FormatByteSize(const uByte: LongWord): string;
 
 implementation
 
@@ -28,6 +35,18 @@ begin
       BlackList.Delete(i);
   end;
   Log(Format('成功加载 %d 个连接黑名单。', [BlackList.Count]));
+end;
+
+function FormatByteSize(const uByte: LongWord): string;
+begin
+  if (uByte < KB) then
+    Result := Format('%u B', [uByte])
+  else if (uByte < MB) then
+    Result := Format('%.2f KB', [uByte / KB])
+  else if (uByte < GB) then
+    Result := Format('%.2f MB', [uByte / MB])
+  else
+    Result := Format('%.2f GB', [uByte / GB])
 end;
 
 initialization

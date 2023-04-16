@@ -4,7 +4,7 @@ object FormMain: TFormMain
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #39564#35777#26381#21153
-  ClientHeight = 442
+  ClientHeight = 438
   ClientWidth = 628
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,13 +16,6 @@ object FormMain: TFormMain
   Position = poDesktopCenter
   OnCreate = FormCreate
   TextHeight = 12
-  object lblConnNum: TLabel
-    Left = 8
-    Top = 288
-    Width = 54
-    Height = 12
-    Caption = #36830#25509#25968': 0'
-  end
   object mmoLog: TMemo
     Left = 8
     Top = 8
@@ -33,27 +26,39 @@ object FormMain: TFormMain
     ScrollBars = ssVertical
     TabOrder = 0
   end
-  object btn1: TButton
-    Left = 296
-    Top = 376
-    Width = 75
-    Height = 25
-    Caption = 'btn1'
+  object GridClientInfo: TStringGrid
+    Left = 8
+    Top = 271
+    Width = 612
+    Height = 154
+    TabStop = False
+    ColCount = 6
+    DefaultColWidth = 100
+    DefaultColAlignment = taCenter
+    DefaultRowHeight = 16
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goFixedRowDefAlign]
     TabOrder = 1
-    OnClick = btn1Click
+    ColWidths = (
+      85
+      100
+      100
+      100
+      100
+      100)
   end
   object dbConn: TFDConnection
     Params.Strings = (
       'DriverID=SQLite'
       'JournalMode=Off'
       'Synchronous=Full')
-    Left = 8
-    Top = 384
+    Left = 29
+    Top = 368
   end
   object dbQuery: TFDQuery
     Connection = dbConn
-    Left = 64
-    Top = 384
+    Left = 93
+    Top = 368
   end
   object serverMain: TServerSocket
     Active = False
@@ -65,12 +70,12 @@ object FormMain: TFormMain
     OnClientDisconnect = serverMainClientDisconnect
     OnClientRead = serverMainClientRead
     OnClientError = serverMainClientError
-    Left = 136
-    Top = 384
+    Left = 157
+    Top = 368
   end
   object MenuMain: TMainMenu
-    Left = 200
-    Top = 384
+    Left = 229
+    Top = 368
     object MenuItemControl: TMenuItem
       Caption = #25511#21046'(&C)'
       object MenuItemReloadBlackList: TMenuItem
@@ -78,5 +83,17 @@ object FormMain: TFormMain
         OnClick = MenuItemReloadBlackListClick
       end
     end
+    object MenuItemView: TMenuItem
+      Caption = #26597#30475'(&V)'
+      object MenuItemViewConnNum: TMenuItem
+        Caption = #24635#36830#25509#25968#37327'(&C)'
+        OnClick = MenuItemViewConnNumClick
+      end
+    end
+  end
+  object TimerSecond: TTimer
+    OnTimer = TimerSecondTimer
+    Left = 301
+    Top = 368
   end
 end
